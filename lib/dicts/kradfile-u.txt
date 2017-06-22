@@ -1,4 +1,4 @@
-#
+module.exports = `#
 #                           KRADFILE - Unicode
 #                              (kradfile-u)
 #
@@ -68,7 +68,7 @@
 # Converting the tool over to Unicode opens up the possibility of using the same
 # code base to develop radical decompositions in Chinese or Korean (the C & K of
 # CJK), and if there is anyone interested in pursuing this, please contact me.
-# 
+#
 # There are some noteworthy changes to the new file vis-a-vis the kradfile
 # and kradfile2 legacy data.
 #
@@ -97,10 +97,10 @@
 #
 #            化 which stood for ⺅
 #            刈 which stood for ⺉
-#            込 which stood for ⻌ 
+#            込 which stood for ⻌
 #            汁 which stood for 氵
 #            初 which stood for 衤
-#            尚 which stood for ⺌ 
+#            尚 which stood for ⺌
 #            買 which stood for 罒
 #            犯 which stood for 犭
 #            忙 which stood for 忄
@@ -115,7 +115,7 @@
 #            邦 which stood for ⻏   (2ECF)
 #            阡 which stood for ⻖   (2ED6)
 #
-# Unicode's inclusion of the JIS x 0212 and JIS x 0213 kanji allow us to 
+# Unicode's inclusion of the JIS x 0212 and JIS x 0213 kanji allow us to
 # replace most of the "place holder" kanji with the actual radical. In
 # fact, Unicode also defines all 214 Kangxi radicals from Mei Yingzuo's Zihui,
 # or "Character Collection/Categorization" published in 1615, so we can do away
@@ -168,13 +168,13 @@
 #       Dictionary Research & Development Group at Monash University.
 #	See: http://www.csse.monash.edu.au/~jwb/edrdg/licence.html
 #       for permissions for use and redistribution.
-# 
+#
 # This is the data file from which the "radkfile" is made, which in turn
-# drives the multi-radical lookup method in XJDIC, WWWJDIC and possibly 
+# drives the multi-radical lookup method in XJDIC, WWWJDIC and possibly
 # other dictionary and related software.
-# 
+#
 # The file is based on work done in 1994/1995 by Michael Raine in which he
-# analyzed all the JIS1/2 kanji and identified the constituent radicals and 
+# analyzed all the JIS1/2 kanji and identified the constituent radicals and
 # other common elements, with the intention of facilitating the selection of
 # kanji within a dictionary program by identifying multiple elements.
 # The file was revised by Jim Breen in September 1995. Further revisions were
@@ -182,8 +182,8 @@
 # carried out in 2001 using suggestions from Yutaka Ohno based on a similar
 # decomposition made by Kobayashi. Further amendments were made in July
 # 2001 after suggestions from Hendrik.
-# 
-# The file consists of 6,355 lines of text; one for each of the 
+#
+# The file consists of 6,355 lines of text; one for each of the
 # JIS X 0208-1997 kanji. Each line is a follows:
 # - the kanji itself,
 # - a space followed by a colon (:) followed by a space,
@@ -194,7 +194,7 @@
 # The decomposition is based on what can be seen in typical kanji
 # glyphs. Elements themselves can be further subdivided. For example,
 # 舌 is an element and so is 口, so the elements in 話 are <口 舌 言>.
-# 
+#
 # Jim Breen, Tokyo, January 2001
 #            Melbourne, July 2001
 #            Melbourne, Dec  2004
@@ -13364,3 +13364,4 @@
 𪘂 : 一 凵 刀 土 止 米 歯
 𪘚 : 一 二 凵 口 止 五 米 歯
 𪚲 : 乙 勹 月 田 亀
+`
