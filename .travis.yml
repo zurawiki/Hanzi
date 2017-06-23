@@ -1,9 +1,15 @@
 language: node_js
 node_js:
-  - v6
+  - "4"
+  - "6"
+  - "node"
+  - "iojs"
+  - "0.12.x"
+  - "0.8.x"
+
 script:
   - npm run lint && npm test -- --coverage
-cache: 
+cache:
   - yarn
 after_success:
   - bash <(curl -s https://codecov.io/bash)
