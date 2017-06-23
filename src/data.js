@@ -1,21 +1,21 @@
 function loadCCEDICT() {
-  return require('./cedict_ts.u8');
+  return require('../data/cedict_ts.u8');
 }
 
 function loadCJK() {
-  return require('./cjk-decomp.txt');
+  return require('../data/cjk-decomp.txt');
 }
 
 function loadIrregularPhonetics() {
-  return require('./irregularphonetics.txt');
+  return require('../data/irregularphonetics.txt');
 }
 
 function loadJunda() {
-  return require('./frequencyjunda.txt');
+  return require('../data/frequencyjunda.txt');
 }
 
 function loadLeiden() {
-  return require('./leidenfreqdata.txt');
+  return require('../data/leidenfreqdata.txt');
 }
 
 exports.loadCCEDICT = loadCCEDICT;

@@ -1,5 +1,5 @@
 const data = require('./data');
-const radicals = require('./data/radicalListWithMeaning').radicalListWithMeaning;
+const radicals = require('../data/radicalListWithMeaning').radicalListWithMeaning;
 
 const NO_GLYPH = 'No glyph available';
 

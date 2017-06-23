@@ -4,8 +4,8 @@ const hanzi = require('./decomposer');
 const dictionarysimplified = {};
 const dictionarytraditional = {};
 
-const phonetic_set_one = require('./data/phonetic_sets_regularity_one.js').regularity_one;
-const phonetic_set_two = require('./data/phonetic_sets_regularity_two.js').regularity_two;
+const phonetic_set_one = require('../data/phonetic_sets_regularity_one').regularity_one;
+const phonetic_set_two = require('../data/phonetic_sets_regularity_two').regularity_two;
 
 const Segmenter = require('./segmenter').LongestMatchSegmenter;
 
@@ -262,7 +262,6 @@ function getPinyin(character) {
     return pinyinarray;
   }
   if (typeof dictionarytraditional[character] !== 'undefined') {
-
     var pinyinarray = [];
     for (let i = 0; i < dictionarytraditional[character].length; i++) {
       pinyinarray[i] = dictionarytraditional[character][i].pinyin;
@@ -316,7 +315,6 @@ function determinePhoneticRegularity(decomposition) {
         regularityarray[charpinyin[i]].component.push(decomposition.components1[k]);
         regularityarray[charpinyin[i]].regularity.push(null);
       } else { // Compare the character pinyin to all possible phonetic pinyin pronunciations
-
         for (let j = 0; j < phoneticpinyin.length; j++) {
           regularityarray[charpinyin[i]].phoneticpinyin.push(phoneticpinyin[j]);
           regularityarray[charpinyin[i]].component.push(decomposition.components1[k]);

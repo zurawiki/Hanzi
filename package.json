@@ -14,6 +14,7 @@
     "node": ">=4"
   },
   "files": [
+    "data",
     "dist",
     "index.js"
   ],
@@ -21,7 +22,7 @@
     "test": "jest",
     "coverage": "npm test -- --coverage",
     "postcoverage": "opn coverage/lcov-report/index.html",
-    "lint": "eslint src test ; echo ",
+    "lint": "eslint scripts src test ; echo ",
     "docs": "documentation readme src --section=API",
     "clean": "rimraf dist",
     "prebuild": "npm run docs && npm run clean",
@@ -56,6 +57,7 @@
     "jest-cli": "^20.0.0",
     "npm-watch": "^0.1.7",
     "opn-cli": "^3.1.0",
+    "request": "^2.81.0",
     "rimraf": "^2.6.1"
   }
 }
