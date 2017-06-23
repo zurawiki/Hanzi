@@ -13,9 +13,9 @@ console.log("Test graphical decomposition of simplifed character: " + decomposit
 console.log("---------");
 
 console.log("Test radical lookups");
-for(var i=0; i<decomposition.components2.length; i++){
-	var radicallookup = hanzi.getRadicalMeaning(decomposition.components2[i]);
-	console.log(decomposition.components2[i] +": " +radicallookup);
+for (var i = 0; i < decomposition.components2.length; i++) {
+  var radicallookup = hanzi.getRadicalMeaning(decomposition.components2[i]);
+  console.log(decomposition.components2[i] + ": " + radicallookup);
 }
 
 var decompositionmany = hanzi.decomposeMany("和挂爱");
@@ -43,9 +43,9 @@ console.log("Test graphical decomposition of simplifed character: " + decomposit
 console.log("---------");
 
 console.log("Test radical lookups");
-for(var i=0; i<decomposition.components2.length; i++){
-	var radicallookup = hanzi.getRadicalMeaning(decomposition.components2[i]);
-	console.log(decomposition.components2[i] +": " +radicallookup);
+for (var i = 0; i < decomposition.components2.length; i++) {
+  var radicallookup = hanzi.getRadicalMeaning(decomposition.components2[i]);
+  console.log(decomposition.components2[i] + ": " + radicallookup);
 }
 
 var singlelookup = hanzi.definitionLookup('愛');
@@ -57,6 +57,6 @@ console.log("Test examples words from character: ");
 console.log(examples);
 console.log(examples[0]);
 var frequency = hanzi.getCharacterFrequency('⺙');
-console.log('⺙ frequency: %s',JSON.stringify(frequency));
+console.log('⺙ frequency: %s', JSON.stringify(frequency));
 var frequency = hanzi.getCharacterFrequency('好');
-console.log('好 frequency: %s',JSON.stringify(frequency));
+console.log('好 frequency: %s', JSON.stringify(frequency));

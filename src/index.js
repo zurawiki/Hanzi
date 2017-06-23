@@ -1,9 +1,9 @@
 var hanzi = require("./hanzidecomposer.js");
 var dict = require("./dictionary.js");
 
-function start(){
-	hanzi.start();
-	dict.start();
+function start() {
+  hanzi.start();
+  dict.start();
 }
 
 exports.start = start;
