@@ -6,16 +6,11 @@ const characterswithcomponent = {};
 const noglyph = 'No glyph available';
 
 function start() {
-  let i = 0;
-  let lines = [];
-
-  console.log('Hanzi is compiling data...');
-
   // Reading in charData - Decomposition Database
   const readFile = fs.readFileSync(`${__dirname}/dicts/cjk-decomp.txt`, 'utf-8');
-  lines = readFile.split(/\r?\n/);
+  const lines = readFile.split(/\r?\n/);
 
-  for (i = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) {
     const colonsplit = lines[i].split(':');
     const character = colonsplit[0];
     const decomposition = colonsplit[1];
@@ -68,7 +63,6 @@ function compileAllComponents() {
       }
     }
   }
-  console.log('Done compiling');
 }
 
 function unique(array_list, token) {
@@ -116,7 +110,7 @@ function decompose(character, typeOfDecomposition) {
       components3: graphicalDecomposition(character),
     };
   } else if (typeOfDecomposition == 1) {
-    object = { character, components: onceDecompose(character) };
+    object = {character, components: onceDecompose(character)};
   } else if (typeOfDecomposition == 2) {
     object = {
       character,

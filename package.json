@@ -11,7 +11,7 @@
     "url": "github.com/zurawiki"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=0.12"
   },
   "files": [
     "dist",

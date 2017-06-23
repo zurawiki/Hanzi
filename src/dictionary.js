@@ -12,8 +12,6 @@ const Segmenter = require('./segmenter').LongestMatchSegmenter;
 const segmenter = new Segmenter(definitionLookup);
 
 function start() {
-  console.log('Hanzi is compiling dictionary...');
-
   // Reading in CCEDICT
   const readFile = fs.readFileSync(`${__dirname}/dicts/cedict_ts.u8`, 'utf-8');
   const lines = readFile.split(/\r?\n/);
@@ -225,8 +223,6 @@ function determineIfSimplified(character) {
 const charfreq = {};
 var wordfreq = {};
 function loadFrequencyData() {
-  console.log('Starting to read frequency data');
-
   var readFile = fs.readFileSync(`${__dirname}/data/leidenfreqdata.txt`, 'utf-8');
   let lines = readFile.split(/\r?\n/);
 
@@ -252,7 +248,6 @@ function loadFrequencyData() {
       meaning: splits[5],
     };
   }
-  console.log('Frequency data loaded');
 }
 
 const irregularphonetics = {};
