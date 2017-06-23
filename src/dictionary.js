@@ -426,33 +426,35 @@ function getPhoneticSet(regularity_scale) {
   }
 }
 
-function PinyinSyllable(raw_syllable) {
-  this.raw_syllable = raw_syllable;
-}
-
-// Methods
-PinyinSyllable.prototype.syllable = function () {
-  // Returns Pinyin sans tone
-  return this.raw_syllable.substring(0, this.raw_syllable.length - 1);
-};
-
-PinyinSyllable.prototype.initial = function () {
-  // Returns the initial of pinyin syllable
-  let initial = '';
-  if (this.raw_syllable.substring(1, 2) == 'h') {
-    // Take into zh, ch, sh
-    initial = this.raw_syllable.substring(0, 2);
-  } else {
-    initial = this.raw_syllable.substring(0, 1);
+class PinyinSyllable {
+  constructor(raw_syllable) {
+    this.raw_syllable = raw_syllable;
   }
-  return initial;
-};
 
-PinyinSyllable.prototype.final = function () {
-  const syllable = this.syllable();
-  const rhyme = syllable.replace(this.initial(), '');
-  return rhyme;
-};
+  // Methods
+  syllable() {
+    // Returns Pinyin sans tone
+    return this.raw_syllable.substring(0, this.raw_syllable.length - 1);
+  }
+
+  initial() {
+    // Returns the initial of pinyin syllable
+    let initial = '';
+    if (this.raw_syllable.substring(1, 2) == 'h') {
+      // Take into zh, ch, sh
+      initial = this.raw_syllable.substring(0, 2);
+    } else {
+      initial = this.raw_syllable.substring(0, 1);
+    }
+    return initial;
+  }
+
+  final() {
+    const syllable = this.syllable();
+    const rhyme = syllable.replace(this.initial(), '');
+    return rhyme;
+  }
+}
 
 exports.start = start;
 exports.definitionLookup = definitionLookup;
