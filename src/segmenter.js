@@ -1,3 +1,5 @@
+const MAX_WORD_LENGTH = 8;
+
 class LongestMatchSegmenter {
   constructor(dict) {
     // dict should be a function that takes a chinese string as the
@@ -5,35 +7,26 @@ class LongestMatchSegmenter {
     this.dict = dict;
   }
 
-  getLongestMatch(input_str) {
-    let i,
-      max_word_len,
-      slice;
-    max_word_len = 8;
-    i = (max_word_len > input_str.length ? max_word_len : input_str.length);
-    while (i >= 0) {
-      slice = input_str.substr(0, i);
+  getLongestMatch(input) {
+    // eslint-disable-next-line no-plusplus
+    for (let i = Math.min(MAX_WORD_LENGTH, input.length); i >= 0; --i) {
+      const slice = input.substr(0, i);
       if (this.dict(slice)) {
         return slice;
       }
-      i--;
     }
-    // no match found, return undefined
+    // no match found
     return undefined;
   }
 
-  segment(input_str) {
-    let seg,
-      segments;
-    segments = [];
-    // loop through the input_str, slicing off each longestMatch and
+  segment(input) {
+    const segments = [];
+    // loop through the input, slicing off each longestMatch and
     // appending it to the segments array
-    while (input_str.length > 0) {
-      seg = this.getLongestMatch(input_str);
-      if (!seg) {
-        seg = input_str.substr(0, 1);
-      }
-      input_str = input_str.slice(seg.length);
+    let string = input.slice(0);
+    while (string.length > 0) {
+      const seg = this.getLongestMatch(string) || string.substr(0, 1);
+      string = string.slice(seg.length);
       segments.push(seg);
     }
     return segments;
