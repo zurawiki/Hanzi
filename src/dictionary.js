@@ -2,12 +2,12 @@ const fs = require('fs');
 
 const dictionarysimplified = {};
 const dictionarytraditional = {};
-const hanzi = require('./hanzidecomposer.js');
+const hanzi = require('./hanzidecomposer');
 
 let phonetic_set_one = {};
 let phonetic_set_two = {};
 
-const Segmenter = require('./segmenter.js').LongestMatchSegmenter;
+const Segmenter = require('./segmenter').LongestMatchSegmenter;
 
 const segmenter = new Segmenter(definitionLookup);
 

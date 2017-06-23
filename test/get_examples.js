@@ -1,5 +1,5 @@
 const assert = require('assert');
-const hanzi = require('../index.js');
+const hanzi = require('../');
 
 hanzi.start();
 

@@ -80,7 +80,7 @@ function unique(array_list, token) {
   return unique;
 }
 
-const decomposeMany = function (characterstring, typeOfDecomposition) {
+function decomposeMany(characterstring, typeOfDecomposition) {
   const decomposearray = {};
 
   // remove spaces from input string
@@ -98,9 +98,9 @@ const decomposeMany = function (characterstring, typeOfDecomposition) {
     decomposearray[onechar] = decompose(onechar, typeOfDecomposition);
   }
   return decomposearray;
-};
+}
 
-var decompose = function (character, typeOfDecomposition) {
+function decompose(character, typeOfDecomposition) {
   character = character.replace(/\s/g, '');
   if (isMessy(character)) {
     return 'Invalid Input';
@@ -173,7 +173,7 @@ var decompose = function (character, typeOfDecomposition) {
 
     return final_array;
   }
-};
+}
 
 function replaceNumbers(characters) {
   const finalreview = [];

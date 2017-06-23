@@ -1,5 +1,5 @@
-const hanzi = require('./hanzidecomposer.js');
-const dict = require('./dictionary.js');
+const hanzi = require('./hanzidecomposer');
+const dict = require('./dictionary');
 
 function start() {
   hanzi.start();
