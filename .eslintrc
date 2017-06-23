@@ -1,13 +1,8 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "airbnb-base",
-  ],
+  "extends": "airbnb-base",
   "env": {
-    "jest": true
-  },
-  "rules": {
-    "semi": [2, "never"],
-    "comma-dangle": [2, "always-multiline"],
+    "browser": true,
+    "jest": true,
+    "node": true
   }
 }

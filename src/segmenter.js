@@ -1,14 +1,16 @@
-var LongestMatchSegmenter;
+let LongestMatchSegmenter;
 
-LongestMatchSegmenter = (function() {
+LongestMatchSegmenter = (function () {
   function LongestMatchSegmenter(dict) {
     // dict should be a function that takes a chinese string as the
     // first param and returns something falsey if item is not in dict
     this.dict = dict;
   }
 
-  LongestMatchSegmenter.prototype.getLongestMatch = function(input_str) {
-    var i, max_word_len, slice;
+  LongestMatchSegmenter.prototype.getLongestMatch = function (input_str) {
+    let i,
+      max_word_len,
+      slice;
     max_word_len = 8;
     i = (max_word_len > input_str.length ? max_word_len : input_str.length);
     while (i >= 0) {
@@ -22,8 +24,9 @@ LongestMatchSegmenter = (function() {
     return undefined;
   };
 
-  LongestMatchSegmenter.prototype.segment = function(input_str) {
-    var seg, segments;
+  LongestMatchSegmenter.prototype.segment = function (input_str) {
+    let seg,
+      segments;
     segments = [];
     // loop through the input_str, slicing off each longestMatch and
     // appending it to the segments array
@@ -39,7 +42,6 @@ LongestMatchSegmenter = (function() {
   };
 
   return LongestMatchSegmenter;
-
-})();
+}());
 
 exports.LongestMatchSegmenter = LongestMatchSegmenter;

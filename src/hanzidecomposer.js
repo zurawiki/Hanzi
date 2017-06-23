@@ -1,70 +1,69 @@
-var fs = require('fs');
-var characters = {};
-var radicals = {};
-var characterswithcomponent = {};
-var noglyph = 'No glyph available';
+const fs = require('fs');
+
+const characters = {};
+let radicals = {};
+const characterswithcomponent = {};
+const noglyph = 'No glyph available';
 
 function start() {
-  var i = 0;
-  var lines = [];
+  let i = 0;
+  let lines = [];
 
-  console.log("Hanzi is compiling data...");
+  console.log('Hanzi is compiling data...');
 
-  //Reading in charData - Decomposition Database
-  var readFile = fs.readFileSync(__dirname + '/dicts/cjk-decomp.txt', 'utf-8');
+  // Reading in charData - Decomposition Database
+  const readFile = fs.readFileSync(`${__dirname}/dicts/cjk-decomp.txt`, 'utf-8');
   lines = readFile.split(/\r?\n/);
 
   for (i = 0; i < lines.length; i++) {
-    var colonsplit = lines[i].split(':');
-    var character = colonsplit[0];
-    var decomposition = colonsplit[1];
-    var openbracket = decomposition.indexOf('(');
-    var closebracket = decomposition.indexOf(')');
-    var typeOfDecomposition = decomposition.substring(0, openbracket);
-    var components = decomposition.substring(openbracket + 1, closebracket).split(",");
+    const colonsplit = lines[i].split(':');
+    const character = colonsplit[0];
+    const decomposition = colonsplit[1];
+    const openbracket = decomposition.indexOf('(');
+    const closebracket = decomposition.indexOf(')');
+    const typeOfDecomposition = decomposition.substring(0, openbracket);
+    const components = decomposition.substring(openbracket + 1, closebracket).split(',');
     characters[character] = {
-      typeOfDecomposition: typeOfDecomposition,
-      components: components
+      typeOfDecomposition,
+      components,
     };
   }
 
-  //Reading in radical list
+  // Reading in radical list
   radicals = require('./dicts/radicalListWithMeaning').radicalListWithMeaning;
 
-  //Compile Components into an object array for easy lookup
+  // Compile Components into an object array for easy lookup
   compileAllComponents();
 }
 
 function compileAllComponents() {
-  var readFile = fs.readFileSync(__dirname + '/data/frequencyjunda.txt', 'utf-8');
-  var lines = readFile.split(/\r?\n/);
+  const readFile = fs.readFileSync(`${__dirname}/data/frequencyjunda.txt`, 'utf-8');
+  const lines = readFile.split(/\r?\n/);
 
-  for (var i = 0; i < lines.length; i++) {
-    var split = lines[i].split('\t');
-    var character = split[1];
-    var decomposition = decompose(character);
-    var j = 0
+  for (let i = 0; i < lines.length; i++) {
+    const split = lines[i].split('\t');
+    const character = split[1];
+    const decomposition = decompose(character);
+    var j = 0;
     for (; j < decomposition.components1.length; j++) {
       var component = decomposition.components1[j];
-      if ('undefined' == typeof characterswithcomponent[component]) {
+      if (typeof characterswithcomponent[component] === 'undefined') {
         if (component != noglyph) {
           characterswithcomponent[component] = [];
           characterswithcomponent[component].push(character);
         }
-      }
-      else if (component != noglyph) characterswithcomponent[component].push(character);
+      } else if (component != noglyph) characterswithcomponent[component].push(character);
     }
 
     var j = 0;
     for (; j < decomposition.components2.length; j++) {
       var component = decomposition.components2[j];
-      if ('undefined' == typeof characterswithcomponent[component]) {
+      if (typeof characterswithcomponent[component] === 'undefined') {
         if (component != noglyph && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
           characterswithcomponent[component] = [];
           if (unique(characterswithcomponent[component], character)) characterswithcomponent[component].push(character);
         }
-      }
-      else if (component != noglyph && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
+      } else if (component != noglyph && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
         if (unique(characterswithcomponent[component], character)) characterswithcomponent[component].push(character);
       }
     }
@@ -73,25 +72,25 @@ function compileAllComponents() {
 }
 
 function unique(array_list, token) {
-  var unique = true;
-  var i = 0;
+  let unique = true;
+  let i = 0;
   for (; i < array_list.length; i++) {
     if (array_list[i] == token) unique = false;
   }
   return unique;
 }
 
-var decomposeMany = function(characterstring, typeOfDecomposition) {
-  var decomposearray = {};
+const decomposeMany = function (characterstring, typeOfDecomposition) {
+  const decomposearray = {};
 
   // remove spaces from input string
   characterstring = characterstring.replace(/\s/g, '');
   if (characterstring == null || characterstring == '') {
-    return "Invalid Input";
+    return 'Invalid Input';
   }
 
-  for (var i = 0; i < characterstring.length; i++) {
-    var onechar = characterstring.substring(i, i + 1);
+  for (let i = 0; i < characterstring.length; i++) {
+    const onechar = characterstring.substring(i, i + 1);
 
     // don't decompose the same character more than once
     if (decomposearray[onechar]) continue;
@@ -101,63 +100,58 @@ var decomposeMany = function(characterstring, typeOfDecomposition) {
   return decomposearray;
 };
 
-var decompose = function(character, typeOfDecomposition) {
+var decompose = function (character, typeOfDecomposition) {
   character = character.replace(/\s/g, '');
   if (isMessy(character)) {
-    return "Invalid Input";
+    return 'Invalid Input';
   }
-  var object;
+  let object;
 
-  /*-- Type of Decomposition: 1 = Only 2 components， 2 = Radical, 3 = Graphical) --*/
+  /* -- Type of Decomposition: 1 = Only 2 components， 2 = Radical, 3 = Graphical) --*/
   if (typeOfDecomposition == null) {
     object = {
-      "character": character,
-      "components1": onceDecompose(character),
-      "components2": radicalDecomposition(character),
-      "components3": graphicalDecomposition(character)
+      character,
+      components1: onceDecompose(character),
+      components2: radicalDecomposition(character),
+      components3: graphicalDecomposition(character),
     };
-  }
-  else if (typeOfDecomposition == 1) {
-    object = {"character": character, "components": onceDecompose(character)};
-  }
-  else if (typeOfDecomposition == 2) {
+  } else if (typeOfDecomposition == 1) {
+    object = { character, components: onceDecompose(character) };
+  } else if (typeOfDecomposition == 2) {
     object = {
-      "character": character,
-      "components": radicalDecomposition(character)
+      character,
+      components: radicalDecomposition(character),
     };
-  }
-  else if (typeOfDecomposition == 3) {
+  } else if (typeOfDecomposition == 3) {
     object = {
-      "character": character,
-      "components": graphicalDecomposition(character)
+      character,
+      components: graphicalDecomposition(character),
     };
   } else {
     return;
   }
-  var string = JSON.stringify(object);
-  var jsonoutput = JSON.parse(string);
+  const string = JSON.stringify(object);
+  const jsonoutput = JSON.parse(string);
   return jsonoutput;
 
-  //Functions to help with Decomposition
+  // Functions to help with Decomposition
 
   function onceDecompose(character) {
-    var components = getComponents(character);
+    const components = getComponents(character);
     return replaceNumbers(components);
   }
 
   function radicalDecomposition(character) {
-    var final_array = [];
+    let final_array = [];
     if (isRadical(character)) {
       final_array.push(character);
-    }
-    else {
-      var components = getComponents(character);
+    } else {
+      const components = getComponents(character);
       if (components.length == 2) {
-        for (var j = 0; j < 2; j++) {
+        for (let j = 0; j < 2; j++) {
           final_array = final_array.concat(radicalDecomposition(components[j]));
         }
-      }
-      else {
+      } else {
         final_array.push(character);
       }
     }
@@ -165,20 +159,16 @@ var decompose = function(character, typeOfDecomposition) {
   }
 
   function graphicalDecomposition(character) {
-    var final_array = [];
-    var components = getComponents(character);
+    let final_array = [];
+    const components = getComponents(character);
     if (components.length == 2) {
-      for (var j = 0; j < 2; j++) {
+      for (let j = 0; j < 2; j++) {
         final_array = final_array.concat(graphicalDecomposition(components[j]));
       }
-    }
-    else {
-      if (isNaN(character)) {
-        final_array.push(character);
-      }
-      else {
-        final_array = final_array.concat(resolveNumber(character));
-      }
+    } else if (isNaN(character)) {
+      final_array.push(character);
+    } else {
+      final_array = final_array.concat(resolveNumber(character));
     }
 
     return final_array;
@@ -186,13 +176,12 @@ var decompose = function(character, typeOfDecomposition) {
 };
 
 function replaceNumbers(characters) {
-  var finalreview = [];
-  for (var i = 0; i < characters.length; i++) {
+  const finalreview = [];
+  for (let i = 0; i < characters.length; i++) {
     if (isNaN(characters[i])) {
       finalreview.push(characters[i]);
-    }
-    else {
-      finalreview.push("No glyph available");
+    } else {
+      finalreview.push('No glyph available');
     }
   }
 
@@ -200,14 +189,13 @@ function replaceNumbers(characters) {
 }
 
 function resolveNumber(number) {
-  var numberscleared = [];
-  var components = getComponents(number);
-  var i = 0;
+  let numberscleared = [];
+  const components = getComponents(number);
+  let i = 0;
   for (; i < components.length; i++) {
     if (isNaN(components[i])) {
       numberscleared.push(components[i]);
-    }
-    else {
+    } else {
       numberscleared = numberscleared.concat(resolveNumber(components[i]));
     }
   }
@@ -216,24 +204,23 @@ function resolveNumber(number) {
 }
 
 function getCharactersWithComponent(component) {
-  if ('undefined' != typeof radicals[component]) {
-    var components = findSameMeaningRadicals(component);
-    var characters = [];
-    var i = 0;
+  if (typeof radicals[component] !== 'undefined') {
+    const components = findSameMeaningRadicals(component);
+    let characters = [];
+    let i = 0;
     for (; i < components.length; i++) {
-      if ('undefined' != typeof characterswithcomponent[components[i]]) characters = characters.concat(characterswithcomponent[components[i]]);
+      if (typeof characterswithcomponent[components[i]] !== 'undefined') characters = characters.concat(characterswithcomponent[components[i]]);
     }
     return characters;
   }
-  else {
-    if ('undefined' != typeof characterswithcomponent[component]) return characterswithcomponent[component];
-    else return component + ' not found';
-  }
+
+  if (typeof characterswithcomponent[component] !== 'undefined') return characterswithcomponent[component];
+  return `${component} not found`;
 }
 
 function findSameMeaningRadicals(radical) {
-  var same_radicals = [];
-  var meaning = radicals[radical];
+  const same_radicals = [];
+  const meaning = radicals[radical];
   for (var radical in radicals) {
     if (radicals.hasOwnProperty(radical)) {
       if (radicals[radical] == meaning) same_radicals.push(radical);
@@ -243,8 +230,8 @@ function findSameMeaningRadicals(radical) {
 }
 
 function isRadical(character) {
-  var isRad = false;
-  if ("undefined" != typeof radicals[character]) {
+  let isRad = false;
+  if (typeof radicals[character] !== 'undefined') {
     isRad = true;
   }
   return isRad;
@@ -255,35 +242,32 @@ function getComponents(character) {
     if (characters[character].typeOfDecomposition == 'c') {
       return character;
     }
-    else {
-      return characters[character].components;
-    }
+
+    return characters[character].components;
   }
-  else {
-    return character;
-  }
+
+  return character;
 }
 
 function getRadicalMeaning(radical) {
   if (isRadical(radical)) {
     return radicals[radical];
   }
-  else {
-    return "N/A";
-  }
+
+  return 'N/A';
 }
 
 function ifComponentExists(component) {
-  return "undefined" != typeof characters[component];
+  return typeof characters[component] !== 'undefined';
 }
 
 function isMessy(character) {
-  //If no input is sent
-  if (character == null || character == "") {
+  // If no input is sent
+  if (character == null || character == '') {
     return true;
   }
-  //If it's not a Chinese character
-  return "undefined" == typeof getComponents(character);
+  // If it's not a Chinese character
+  return typeof getComponents(character) === 'undefined';
 }
 
 exports.start = start;
