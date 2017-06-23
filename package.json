@@ -1,24 +1,64 @@
 {
-    "name": "hanzi",
-    "author": "Niel de la Rouviere",
-    "description": "HanziJS is a Chinese character and NLP module for Chinese language processing for Node.js",
-    "version": "0.5.0",
-    "main": "index.js",
-    "browserify": { "transform": [ "brfs" ] },
-    "browser": {
-        "coffee-script": false
-    },
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:nieldlr/Hanzi.git"
-    },
-    "scripts": {
-        "test": "mocha"
-    },
-    "devDependencies": {
-        "mocha": "1.12.x",
-        "brfs": "~1.2.0"
-    },
-    "dependencies": {
-    }
+  "name": "hanzi",
+  "version": "0.6.0",
+  "description": "HanziJS is a Chinese character and NLP module for Chinese language processing for Node.js",
+  "license": "MIT",
+  "repository": "zurawiki/Hanzi",
+  "main": "index.js",
+  "author": {
+    "name": "Roger Zurawicki",
+    "email": "rzurawicki@gmail.com",
+    "url": "github.com/zurawiki"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "files": [
+    "dist",
+    "index.js"
+  ],
+  "scripts": {
+    "test": "jest",
+    "coverage": "npm test -- --coverage",
+    "postcoverage": "opn coverage/lcov-report/index.html",
+    "lint": "eslint src test",
+    "docs": "documentation readme src --section=API",
+    "clean": "rimraf dist",
+    "prebuild": "npm run docs && npm run clean",
+    "build": "babel src -d dist --copy-files",
+    "watch": "npm-watch",
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish",
+    "prepublish": "npm run lint && npm test && npm run build",
+    "postpublish": "git push origin master --follow-tags"
+  },
+  "watch": {
+    "test": "{src,test}/*.js",
+    "lint": "{src,test}/*.js",
+    "build": "src"
+  },
+  "jest": {
+    "testRegex": "/test/.*",
+    "testEnvironment": "node"
+  },
+  "keywords": [
+    "hanzi"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^20.0.0",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-stage-2": "^6.18.0",
+    "documentation": "4.0.0-rc.1",
+    "eslint": "^4.0.0",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "jest-cli": "^20.0.0",
+    "npm-watch": "^0.1.7",
+    "opn-cli": "^3.1.0",
+    "rimraf": "^2.6.1"
+  }
 }

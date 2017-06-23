@@ -1,4 +1,4 @@
-var hanzi = require('./lib/module.js');
+var hanzi = require('./');
 hanzi.start();
 
 //Simplified Tests

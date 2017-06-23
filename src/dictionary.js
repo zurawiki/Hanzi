@@ -10,7 +10,7 @@ var segmenter = new Segmenter(definitionLookup);
 
 function start(){
 	console.log("Hanzi is compiling dictionary...");
-	
+
 	//Reading in CCEDICT
 	var readFile = fs.readFileSync(__dirname + '/dicts/cedict_ts.u8', 'utf-8');
 	var lines = readFile.split(/\r?\n/);
@@ -82,7 +82,7 @@ function dictionarySearch(character, type){
 	/*--- Types: Only = Just the characters and no alternatives. If not then finds all cases of that character ---*/
 	var search = [];
 	var regexstring = "^(";
-	
+
 	if(type == "only"){
 		for(var i=0; i<character.length; i++){
 			if(i < character.length-1){
@@ -118,7 +118,7 @@ function dictionarySearch(character, type){
 			}
 		}
 	}
-	
+
 	return search;
 }
 
@@ -136,7 +136,7 @@ function getExamples(character){
 	for(; i<potentialexamples.length; i++) { //Create Array of Frequency Points to calculate distributions
 		//It takes the frequency accounts of both scripts into account.
 
-		var wordsimp = potentialexamples[i][0].simplified;	
+		var wordsimp = potentialexamples[i][0].simplified;
 		var wordtrad = potentialexamples[i][0].traditional;
 
 		var totalfrequency = 0;
@@ -186,7 +186,7 @@ function getExamples(character){
 			}
 			if(wordfreq[word.simplified] > highrange){
 				highfreq.push(word);
-			}		
+			}
 		}
 	}
 	var examplewords = [highfreq, midfreq, lowfreq];
@@ -229,8 +229,8 @@ function loadFrequencyData(){
 	console.log("Starting to read frequency data");
 
 	var	readFile = fs.readFileSync(__dirname + '/data/leidenfreqdata.txt', 'utf-8');
-	lines = readFile.split(/\r?\n/);
-	
+  var lines = readFile.split(/\r?\n/);
+
 	var i=0;
 	for(; i<lines.length; i++) {
 		var splits = lines[i].split(",");
@@ -240,7 +240,7 @@ function loadFrequencyData(){
 	};
 
 	var	readFile = fs.readFileSync(__dirname + '/data/frequencyjunda.txt', 'utf-8');
-	lines = readFile.split(/\r?\n/);
+  lines = readFile.split(/\r?\n/);
 	var i=0;
 	for(; i<lines.length; i++) {
 		var splits = lines[i].split("\t");
@@ -304,7 +304,7 @@ function determinePhoneticRegularity(decomposition){
 	if('undefined' == typeof decomposition.character){
 		decomposition = hanzi.decompose(decomposition);
 	}
-	
+
 	//Get all possible pronunciations for character
 	var charpinyin = getPinyin(decomposition.character);
 	if(charpinyin == null){
@@ -339,7 +339,7 @@ function determinePhoneticRegularity(decomposition){
 				for(; j<phoneticpinyin.length; j++){
 					regularityarray[charpinyin[i]].phoneticpinyin.push(phoneticpinyin[j]);
 					regularityarray[charpinyin[i]].component.push(decomposition.components1[k]);
-					regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));				
+					regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));
 				}
 			}
 		};
@@ -370,12 +370,12 @@ function determinePhoneticRegularity(decomposition){
 				for(; j<phoneticpinyin.length; j++){
 					regularityarray[charpinyin[i]].phoneticpinyin.push(phoneticpinyin[j]);
 					regularityarray[charpinyin[i]].component.push(decomposition.components2[k]);
-					regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));				
+					regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));
 				}
 			}
 		};
 	}
-	return regularityarray;	
+	return regularityarray;
 }
 
 function getCharacterFrequency(character){
