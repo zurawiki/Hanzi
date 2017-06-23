@@ -1,8 +1,6 @@
 const assert = require('assert');
 const hanzi = require('../');
 
-hanzi.start();
-
 describe('hanzidictionary', () => {
   it('should look up a definition', () => {
     const expected = [{
@@ -14,6 +12,7 @@ describe('hanzidictionary', () => {
     assert.deepEqual(hanzi.definitionLookup('爱'), expected);
     assert.deepEqual(hanzi.definitionLookup('愛'), expected);
   });
+
   it('should look up a simplified definition with simplified character', () => {
     const expected = [{
       traditional: '愛',
@@ -23,6 +22,7 @@ describe('hanzidictionary', () => {
     }];
     assert.deepEqual(hanzi.definitionLookup('爱', 's'), expected);
   });
+
   it('should look up a traditional definition with traditional character', () => {
     const expected = [{
       traditional: '愛',
@@ -32,12 +32,15 @@ describe('hanzidictionary', () => {
     }];
     assert.deepEqual(hanzi.definitionLookup('愛', 't'), expected);
   });
+
   it('should fail looking up a simplified definition with a traditional character', () => {
     assert.deepEqual(hanzi.definitionLookup('愛', 's'), undefined);
   });
+
   it('should fail looking up a traditional definition with a simplified character', () => {
     assert.deepEqual(hanzi.definitionLookup('爱', 't'), undefined);
   });
+
   it('should look up a definition with multiple characters', () => {
     const expected = [{
       traditional: '最後',
@@ -554,5 +557,68 @@ describe('hanzidictionary', () => {
     }],
     ];
     assert.deepEqual(hanzi.dictionarySearch('爸'), expected);
+  });
+
+  it('should give examples in simplified', () => {
+    const examples = hanzi.getExamples('爱');
+    assert.equal(examples.length, 3);
+    assert.deepEqual(examples[0], [
+      {
+        traditional: '可愛',
+        simplified: '可爱',
+        pinyin: 'ke3 ai4',
+        definition: 'adorable/cute/lovely',
+      },
+      {
+        traditional: '愛',
+        simplified: '爱',
+        pinyin: 'ai4',
+        definition: 'to love/affection/to be fond of/to like',
+      },
+      {
+        traditional: '愛情',
+        simplified: '爱情',
+        pinyin: 'ai4 qing2',
+        definition: 'romance/love (romantic)/CL:個|个[ge4],份[fen4]',
+      },
+      {
+        traditional: '親愛',
+        simplified: '亲爱',
+        pinyin: 'qin1 ai4',
+        definition: 'dear/beloved/darling',
+      }],
+    );
+  });
+
+  it('should give examples in traditional', () => {
+    const examples = hanzi.getExamples('愛');
+
+    assert.equal(examples.length, 3);
+    assert.deepEqual(examples[0], [
+      {
+        traditional: '可愛',
+        simplified: '可爱',
+        pinyin: 'ke3 ai4',
+        definition: 'adorable/cute/lovely',
+      },
+      {
+        traditional: '愛',
+        simplified: '爱',
+        pinyin: 'ai4',
+        definition: 'to love/affection/to be fond of/to like',
+      },
+      {
+        traditional: '愛情',
+        simplified: '爱情',
+        pinyin: 'ai4 qing2',
+        definition: 'romance/love (romantic)/CL:個|个[ge4],份[fen4]',
+      },
+      {
+        traditional: '親愛',
+        simplified: '亲爱',
+        pinyin: 'qin1 ai4',
+        definition: 'dear/beloved/darling',
+      }],
+    );
   });
 });

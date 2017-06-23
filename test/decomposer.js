@@ -1,8 +1,6 @@
 const assert = require('assert');
 const hanzi = require('../');
 
-hanzi.start();
-
 describe('hanzidecomposer', () => {
   it('checks if component exists', () => {
     assert(hanzi.ifComponentExists('爱'));
