@@ -1,8 +1,8 @@
-const fs = require('fs');
+const data = require('./data');
+const hanzi = require('./hanzidecomposer');
 
 const dictionarysimplified = {};
 const dictionarytraditional = {};
-const hanzi = require('./hanzidecomposer');
 
 let phonetic_set_one = {};
 let phonetic_set_two = {};
@@ -13,7 +13,7 @@ const segmenter = new Segmenter(definitionLookup);
 
 function start() {
   // Reading in CCEDICT
-  const readFile = fs.readFileSync(`${__dirname}/dicts/cedict_ts.u8`, 'utf-8');
+  const readFile = data.loadCCEDICT();
   const lines = readFile.split(/\r?\n/);
   loadIrregularPhonetics();
   loadFrequencyData();
@@ -223,7 +223,7 @@ function determineIfSimplified(character) {
 const charfreq = {};
 var wordfreq = {};
 function loadFrequencyData() {
-  var readFile = fs.readFileSync(`${__dirname}/data/leidenfreqdata.txt`, 'utf-8');
+  var readFile = data.loadLeiden();
   let lines = readFile.split(/\r?\n/);
 
   var i = 0;
@@ -234,10 +234,10 @@ function loadFrequencyData() {
     wordfreq[word] = freq;
   }
 
-  var readFile = fs.readFileSync(`${__dirname}/data/frequencyjunda.txt`, 'utf-8');
+  var readFile = data.loadJunda();
   lines = readFile.split(/\r?\n/);
-  var i = 0;
-  for (; i < lines.length; i++) {
+
+  for (var i = 0; i < lines.length; i++) {
     var splits = lines[i].split('\t');
     charfreq[splits[1]] = {
       number: splits[0],
@@ -252,7 +252,7 @@ function loadFrequencyData() {
 
 const irregularphonetics = {};
 function loadIrregularPhonetics() {
-  const readFile = fs.readFileSync(`${__dirname}/data/irregularphonetics.txt`, 'utf-8');
+  const readFile = data.loadIrregularPhonetics();
   const lines = readFile.split(/\r?\n/);
   for (let i = 0; i < lines.length; i++) {
     const splits = lines[i].split(':');
@@ -294,7 +294,7 @@ function getPinyin(character) {
 
 function determinePhoneticRegularity(decomposition) {
   let regularityarray = {};
-  // An object is not passed to this function, create the decomposition object with the character input
+  // An object is not passed to this function, create the decomposition object with the character data
   if (typeof decomposition.character === 'undefined') {
     decomposition = hanzi.decompose(decomposition);
   }

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const data = require('./data');
 
 const characters = {};
 let radicals = {};
@@ -7,7 +7,7 @@ const noglyph = 'No glyph available';
 
 function start() {
   // Reading in charData - Decomposition Database
-  const readFile = fs.readFileSync(`${__dirname}/dicts/cjk-decomp.txt`, 'utf-8');
+  const readFile = data.loadCJK();
   const lines = readFile.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
@@ -25,14 +25,14 @@ function start() {
   }
 
   // Reading in radical list
-  radicals = require('./dicts/radicalListWithMeaning').radicalListWithMeaning;
+  radicals = require('./data/radicalListWithMeaning').radicalListWithMeaning;
 
   // Compile Components into an object array for easy lookup
   compileAllComponents();
 }
 
 function compileAllComponents() {
-  const readFile = fs.readFileSync(`${__dirname}/data/frequencyjunda.txt`, 'utf-8');
+  const readFile = data.loadJunda();
   const lines = readFile.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
