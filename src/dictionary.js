@@ -1,5 +1,5 @@
 const data = require('./data');
-const hanzi = require('./hanzidecomposer');
+const hanzi = require('./decomposer');
 
 const dictionarysimplified = {};
 const dictionarytraditional = {};
