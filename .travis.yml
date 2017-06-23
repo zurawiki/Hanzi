@@ -6,9 +6,8 @@ node_js:
   - "iojs"
   - "0.12.x"
   - "0.8.x"
-
 script:
-  - npm run lint && npm test -- --coverage
+  - npm run build && npm run lint && npm test -- --coverage
 cache:
   - yarn
 after_success:
