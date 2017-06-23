@@ -8,7 +8,6 @@ class LongestMatchSegmenter {
   }
 
   getLongestMatch(input) {
-    // eslint-disable-next-line no-plusplus
     for (let i = Math.min(MAX_WORD_LENGTH, input.length); i >= 0; --i) {
       const slice = input.substr(0, i);
       if (this.dict(slice)) {

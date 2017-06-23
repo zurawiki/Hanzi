@@ -4,8 +4,8 @@ const hanzi = require('./decomposer');
 const dictionarysimplified = {};
 const dictionarytraditional = {};
 
-let phonetic_set_one = {};
-let phonetic_set_two = {};
+const phonetic_set_one = require('./data/phonetic_sets_regularity_one.js').regularity_one;
+const phonetic_set_two = require('./data/phonetic_sets_regularity_two.js').regularity_two;
 
 const Segmenter = require('./segmenter').LongestMatchSegmenter;
 
@@ -17,8 +17,7 @@ function start() {
   const lines = readFile.split(/\r?\n/);
   loadIrregularPhonetics();
   loadFrequencyData();
-  phonetic_set_one = require('./data/phonetic_sets_regularity_one.js').regularity_one;
-  phonetic_set_two = require('./data/phonetic_sets_regularity_two.js').regularity_two;
+
 
   const STARTING_LINE = 30;
   for (let i = STARTING_LINE; i < lines.length; i++) {
@@ -129,8 +128,8 @@ function getExamples(character) {
   const lowfreq = [];
   const midfreq = [];
   const highfreq = [];
-  let i = 0;
-  for (; i < potentialexamples.length; i++) { // Create Array of Frequency Points to calculate distributions
+
+  for (let i = 0; i < potentialexamples.length; i++) { // Create Array of Frequency Points to calculate distributions
     // It takes the frequency accounts of both scripts into account.
 
     const wordsimp = potentialexamples[i][0].simplified;
@@ -164,8 +163,7 @@ function getExamples(character) {
     const midrange = [mean + sd, lowrange];
     const highrange = mean + sd;
 
-    let i = 0;
-    for (; i < potentialexamples.length; i++) {
+    for (let i = 0; i < potentialexamples.length; i++) {
       const word = potentialexamples[i][0];
 
       if (typeof wordfreq[word.simplified] !== 'undefined') {
@@ -191,23 +189,19 @@ function getExamples(character) {
 
   function calculateMean() {
     let total = 0;
-    let i = 0;
-    for (; i < allfreq.length; i++) {
+    for (let i = 0; i < allfreq.length; i++) {
       total += parseInt(allfreq[i], 10);
     }
-    const mean = total / allfreq.length;
-    return mean;
+    return total / allfreq.length;
   }
 
   function calculateVariance() {
     let total = 0;
-    let i = 0;
-    for (; i < allfreq.length; i++) {
+    for (let i = 0; i < allfreq.length; i++) {
       const localvar = parseInt(allfreq[i], 10) - mean;
       total += localvar * localvar;
     }
-    const variance = total / allfreq.length;
-    return variance;
+    return total / allfreq.length;
   }
 }
 
@@ -221,31 +215,27 @@ function determineIfSimplified(character) {
 }
 
 const charfreq = {};
-var wordfreq = {};
-function loadFrequencyData() {
-  var readFile = data.loadLeiden();
-  let lines = readFile.split(/\r?\n/);
+const wordfreq = {};
 
-  var i = 0;
-  for (; i < lines.length; i++) {
-    var splits = lines[i].split(',');
-    const word = splits[0];
-    const freq = splits[1];
+function loadFrequencyData() {
+  const leidenFile = data.loadLeiden();
+  const leidenLines = leidenFile.split(/\r?\n/);
+  for (let i = 0; i < leidenLines.length; i++) {
+    const [word, freq] = leidenLines[i].split(',');
     wordfreq[word] = freq;
   }
 
-  var readFile = data.loadJunda();
-  lines = readFile.split(/\r?\n/);
-
-  for (var i = 0; i < lines.length; i++) {
-    var splits = lines[i].split('\t');
-    charfreq[splits[1]] = {
-      number: splits[0],
-      character: splits[1],
-      count: splits[2],
-      percentage: splits[3],
-      pinyin: splits[4],
-      meaning: splits[5],
+  const jundaFile = data.loadJunda();
+  const jundaline = jundaFile.split(/\r?\n/);
+  for (let i = 0; i < jundaline.length; i++) {
+    const [number, character, count, percentage, pinyin, meaning] = jundaline[i].split('\t');
+    charfreq[character] = {
+      number,
+      character,
+      count,
+      percentage,
+      pinyin,
+      meaning,
     };
   }
 }
@@ -265,17 +255,16 @@ function loadIrregularPhonetics() {
 function getPinyin(character) {
   // These are for components not found in CC-CEDICT.
   if (typeof dictionarysimplified[character] !== 'undefined') {
-    var i = 0;
     var pinyinarray = [];
-    for (; i < dictionarysimplified[character].length; i++) {
+    for (let i = 0; i < dictionarysimplified[character].length; i++) {
       pinyinarray[i] = dictionarysimplified[character][i].pinyin;
     }
     return pinyinarray;
   }
   if (typeof dictionarytraditional[character] !== 'undefined') {
-    var i = 0;
+
     var pinyinarray = [];
-    for (; i < dictionarytraditional[character].length; i++) {
+    for (let i = 0; i < dictionarytraditional[character].length; i++) {
       pinyinarray[i] = dictionarytraditional[character][i].pinyin;
     }
     return pinyinarray;
@@ -308,11 +297,10 @@ function determinePhoneticRegularity(decomposition) {
   let phoneticpinyin = [];
 
   // Determine phonetic regularity for components on level 1 decomposition
-  for (var k = 0; k < decomposition.components1.length; k++) {
+  for (let k = 0; k < decomposition.components1.length; k++) {
     phoneticpinyin = getPinyin(decomposition.components1[k]); // Get the pinyin of the component
 
-    var i = 0;
-    for (; i < charpinyin.length; i++) { // Compare it with all the possible pronunciations of the character
+    for (let i = 0; i < charpinyin.length; i++) { // Compare it with all the possible pronunciations of the character
       // Init Object
       if (typeof regularityarray[charpinyin[i]] === 'undefined') { // If the object store has no character pinyin stored yet, create the point
         regularityarray[charpinyin[i]] = {
@@ -328,8 +316,8 @@ function determinePhoneticRegularity(decomposition) {
         regularityarray[charpinyin[i]].component.push(decomposition.components1[k]);
         regularityarray[charpinyin[i]].regularity.push(null);
       } else { // Compare the character pinyin to all possible phonetic pinyin pronunciations
-        var j = 0;
-        for (; j < phoneticpinyin.length; j++) {
+
+        for (let j = 0; j < phoneticpinyin.length; j++) {
           regularityarray[charpinyin[i]].phoneticpinyin.push(phoneticpinyin[j]);
           regularityarray[charpinyin[i]].component.push(decomposition.components1[k]);
           regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));
@@ -338,11 +326,10 @@ function determinePhoneticRegularity(decomposition) {
     }
   }
 
-  for (var k = 0; k < decomposition.components2.length; k++) {
+  for (let k = 0; k < decomposition.components2.length; k++) {
     phoneticpinyin = getPinyin(decomposition.components2[k]); // Get the pinyin of the component
 
-    var i = 0;
-    for (; i < charpinyin.length; i++) { // Compare it with all the possible pronunciations of the character
+    for (let i = 0; i < charpinyin.length; i++) { // Compare it with all the possible pronunciations of the character
       // Init Object
       if (typeof regularityarray[charpinyin[i]] === 'undefined') { // If the object store has no character pinyin stored yet, create the point
         regularityarray[charpinyin[i]] = {
@@ -358,8 +345,7 @@ function determinePhoneticRegularity(decomposition) {
         regularityarray[charpinyin[i]].component.push(decomposition.components2[k]);
         regularityarray[charpinyin[i]].regularity.push(null);
       } else { // Compare the character pinyin to all possible phonetic pinyin pronunciations
-        var j = 0;
-        for (; j < phoneticpinyin.length; j++) {
+        for (let j = 0; j < phoneticpinyin.length; j++) {
           regularityarray[charpinyin[i]].phoneticpinyin.push(phoneticpinyin[j]);
           regularityarray[charpinyin[i]].component.push(decomposition.components2[k]);
           regularityarray[charpinyin[i]].regularity.push(getRegularityScale(charpinyin[i], phoneticpinyin[j]));
@@ -418,10 +404,8 @@ function getPhoneticSet(regularity_scale) {
   switch (regularity_scale) {
     case 1:
       return phonetic_set_one;
-      break;
     case 2:
       return phonetic_set_two;
-      break;
     default:
   }
 }

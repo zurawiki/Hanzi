@@ -1,9 +1,10 @@
 const data = require('./data');
+const radicals = require('./data/radicalListWithMeaning').radicalListWithMeaning;
 
-const characters = {};
-let radicals = {};
-const characterswithcomponent = {};
-const noglyph = 'No glyph available';
+const NO_GLYPH = 'No glyph available';
+
+const characterStore = {};
+const characterWithComponent = {};
 
 function start() {
   // Reading in charData - Decomposition Database
@@ -11,21 +12,16 @@ function start() {
   const lines = readFile.split(/\r?\n/);
 
   for (let i = 0; i < lines.length; i++) {
-    const colonsplit = lines[i].split(':');
-    const character = colonsplit[0];
-    const decomposition = colonsplit[1];
+    const [character, decomposition] = lines[i].split(':');
     const openbracket = decomposition.indexOf('(');
     const closebracket = decomposition.indexOf(')');
     const typeOfDecomposition = decomposition.substring(0, openbracket);
     const components = decomposition.substring(openbracket + 1, closebracket).split(',');
-    characters[character] = {
+    characterStore[character] = {
       typeOfDecomposition,
       components,
     };
   }
-
-  // Reading in radical list
-  radicals = require('./data/radicalListWithMeaning').radicalListWithMeaning;
 
   // Compile Components into an object array for easy lookup
   compileAllComponents();
@@ -39,39 +35,38 @@ function compileAllComponents() {
     const split = lines[i].split('\t');
     const character = split[1];
     const decomposition = decompose(character);
-    var j = 0;
-    for (; j < decomposition.components1.length; j++) {
-      var component = decomposition.components1[j];
-      if (typeof characterswithcomponent[component] === 'undefined') {
-        if (component != noglyph) {
-          characterswithcomponent[component] = [];
-          characterswithcomponent[component].push(character);
+
+    for (let j = 0; j < decomposition.components1.length; j++) {
+      const component = decomposition.components1[j];
+      if (typeof characterWithComponent[component] === 'undefined') {
+        if (component != NO_GLYPH) {
+          characterWithComponent[component] = [];
+          characterWithComponent[component].push(character);
         }
-      } else if (component != noglyph) characterswithcomponent[component].push(character);
+      } else if (component != NO_GLYPH) characterWithComponent[component].push(character);
     }
 
-    var j = 0;
-    for (; j < decomposition.components2.length; j++) {
-      var component = decomposition.components2[j];
-      if (typeof characterswithcomponent[component] === 'undefined') {
-        if (component != noglyph && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
-          characterswithcomponent[component] = [];
-          if (unique(characterswithcomponent[component], character)) characterswithcomponent[component].push(character);
+    for (let j = 0; j < decomposition.components2.length; j++) {
+      const component = decomposition.components2[j];
+      if (typeof characterWithComponent[component] === 'undefined') {
+        if (component != NO_GLYPH && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
+          characterWithComponent[component] = [];
+          if (unique(characterWithComponent[component], character)) characterWithComponent[component].push(character);
         }
-      } else if (component != noglyph && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
-        if (unique(characterswithcomponent[component], character)) characterswithcomponent[component].push(character);
+      } else if (component != NO_GLYPH && component.search(/[一丨丶⺀丿乙⺃乚⺄亅丷]/g) == -1) {
+        if (unique(characterWithComponent[component], character)) characterWithComponent[component].push(character);
       }
     }
   }
 }
 
-function unique(array_list, token) {
-  let unique = true;
-  let i = 0;
-  for (; i < array_list.length; i++) {
-    if (array_list[i] == token) unique = false;
+function unique(list, token) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i] === token) {
+      return false;
+    }
   }
-  return unique;
+  return true;
 }
 
 function decomposeMany(characterstring, typeOfDecomposition) {
@@ -87,9 +82,9 @@ function decomposeMany(characterstring, typeOfDecomposition) {
     const onechar = characterstring.substring(i, i + 1);
 
     // don't decompose the same character more than once
-    if (decomposearray[onechar]) continue;
-
-    decomposearray[onechar] = decompose(onechar, typeOfDecomposition);
+    if (!decomposearray[onechar]) {
+      decomposearray[onechar] = decompose(onechar, typeOfDecomposition);
+    }
   }
   return decomposearray;
 }
@@ -203,12 +198,12 @@ function getCharactersWithComponent(component) {
     let characters = [];
     let i = 0;
     for (; i < components.length; i++) {
-      if (typeof characterswithcomponent[components[i]] !== 'undefined') characters = characters.concat(characterswithcomponent[components[i]]);
+      if (typeof characterWithComponent[components[i]] !== 'undefined') characters = characters.concat(characterWithComponent[components[i]]);
     }
     return characters;
   }
 
-  if (typeof characterswithcomponent[component] !== 'undefined') return characterswithcomponent[component];
+  if (typeof characterWithComponent[component] !== 'undefined') return characterWithComponent[component];
   return `${component} not found`;
 }
 
@@ -233,11 +228,11 @@ function isRadical(character) {
 
 function getComponents(character) {
   if (ifComponentExists(character)) {
-    if (characters[character].typeOfDecomposition == 'c') {
+    if (characterStore[character].typeOfDecomposition == 'c') {
       return character;
     }
 
-    return characters[character].components;
+    return characterStore[character].components;
   }
 
   return character;
@@ -252,7 +247,7 @@ function getRadicalMeaning(radical) {
 }
 
 function ifComponentExists(component) {
-  return typeof characters[component] !== 'undefined';
+  return typeof characterStore[component] !== 'undefined';
 }
 
 function isMessy(character) {
