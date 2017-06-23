@@ -26,6 +26,12 @@ describe('hanzidecomposer', () => {
 
   it("gets a radical's meaning", () => {
     assert(hanzi.getRadicalMeaning('氵'), 'water');
+    assert(hanzi.getRadicalMeaning('爫'), 'claw/talon');
+    assert(hanzi.getRadicalMeaning('冖'), 'cover');
+    assert(hanzi.getRadicalMeaning('𠂇'), 'left hand');
+    assert(hanzi.getRadicalMeaning('又'), 'right hand');
+    assert(hanzi.getRadicalMeaning('心'), 'heart');
+    assert(hanzi.getRadicalMeaning('夂'), 'go');
   });
 
   it('gets character frequency data', () => {
@@ -36,6 +42,15 @@ describe('hanzidecomposer', () => {
       percentage: '79.8453694124',
       pinyin: 're4',
       meaning: 'heat/to heat up/fervent/hot (of weather)/warm up',
+    });
+    assert.deepEqual(hanzi.getCharacterFrequency('⺙'), 'Character not found');
+    assert.deepEqual(hanzi.getCharacterFrequency('好'), {
+      number: '82',
+      character: '好',
+      count: '411866',
+      percentage: '38.1712637099',
+      pinyin: 'hao3/hao4',
+      meaning: 'good/well, be fond of',
     });
   });
 
@@ -85,6 +100,7 @@ describe('hanzidictionary', () => {
       definition: 'to love/affection/to be fond of/to like',
     }];
     assert.deepEqual(hanzi.definitionLookup('爱'), expected);
+    assert.deepEqual(hanzi.definitionLookup('愛'), expected);
   });
   it('should look up a simplified definition with simplified character', () => {
     const expected = [{
@@ -626,5 +642,96 @@ describe('hanzidictionary', () => {
     }],
     ];
     assert.deepEqual(hanzi.dictionarySearch('爸'), expected);
+  });
+});
+
+describe('decomposeMany', () => {
+  it('returns three characters', () => {
+    assert.deepEqual(hanzi.decomposeMany('和挂爱'), {
+      和: {
+        character: '和',
+        components1: ['禾', '口'],
+        components2: ['禾', '口'],
+        components3: ['㇒', '一', '丨', '八', '口'],
+      },
+      挂: {
+        character: '挂',
+        components1: ['扌', '圭'],
+        components2: ['扌', '圭'],
+        components3: ['亅', '二', '圭'],
+      },
+      爱: {
+        character: '爱',
+        components1: ['No glyph available', '友'],
+        components2: ['爫', '冖', '𠂇', '又'],
+        components3: ['爫', '冖', '𠂇', '㇇', '㇏'],
+      },
+    },
+    );
+  });
+});
+
+describe('getExamples', () => {
+  it('simplified', () => {
+    const examples = hanzi.getExamples('爱');
+    assert.equal(examples.length, 3);
+    assert.deepEqual(examples[0], [
+      {
+        traditional: '可愛',
+        simplified: '可爱',
+        pinyin: 'ke3 ai4',
+        definition: 'adorable/cute/lovely',
+      },
+      {
+        traditional: '愛',
+        simplified: '爱',
+        pinyin: 'ai4',
+        definition: 'to love/affection/to be fond of/to like',
+      },
+      {
+        traditional: '愛情',
+        simplified: '爱情',
+        pinyin: 'ai4 qing2',
+        definition: 'romance/love (romantic)/CL:個|个[ge4],份[fen4]',
+      },
+      {
+        traditional: '親愛',
+        simplified: '亲爱',
+        pinyin: 'qin1 ai4',
+        definition: 'dear/beloved/darling',
+      }],
+    );
+  });
+
+  it('traditional', () => {
+    const examples = hanzi.getExamples('愛');
+
+    assert.equal(examples.length, 3);
+    assert.deepEqual(examples[0], [
+      {
+        traditional: '可愛',
+        simplified: '可爱',
+        pinyin: 'ke3 ai4',
+        definition: 'adorable/cute/lovely',
+      },
+      {
+        traditional: '愛',
+        simplified: '爱',
+        pinyin: 'ai4',
+        definition: 'to love/affection/to be fond of/to like',
+      },
+      {
+        traditional: '愛情',
+        simplified: '爱情',
+        pinyin: 'ai4 qing2',
+        definition: 'romance/love (romantic)/CL:個|个[ge4],份[fen4]',
+      },
+      {
+        traditional: '親愛',
+        simplified: '亲爱',
+        pinyin: 'qin1 ai4',
+        definition: 'dear/beloved/darling',
+      }],
+    );
   });
 });
