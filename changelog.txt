@@ -19,3 +19,5 @@ v0.4.0 - Added new function: getCharactersWithComponent
 v0.4.1 - Bug fix to way the characterswithcomponent object was compiled.
 v0.4.2 - Fix 耂 encoding error
 v0.5.0 - Add Longest Match segment function thanks to nikdvp! Browserify builds now also function properly using brfs.
+v0.6.0 - Modernize build system to allow ES6 syntax
+v0.6.1 - Combine all tests under directory and cleanup code
