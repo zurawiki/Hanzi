@@ -1,6 +1,6 @@
 {
   "name": "@zurawiki/hanzi",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "HanziJS is a Chinese character and NLP module for Chinese language processing for Node.js",
   "license": "MIT",
   "repository": "zurawiki/Hanzi",
