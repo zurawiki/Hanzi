@@ -21,7 +21,7 @@ function main() {
   // CC-CEDICT
   downloadAndSave(
     'https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz',
-    '../data/cedict_ts.u8',
+    `${__dirname}/../data/cedict_ts.u8`,
   );
 }
 

@@ -365,6 +365,20 @@ HanziJS is used in the following projects:
 -   [nieldlr (Author)](http://github.com/nieldlr) 
 -   [djuretic](http://github.com/djuretic)
 -   [nikdvp](http://github.com/nikvdp)
+-   [zurawiki](http://github.com/zurawiki)
+
+## Updating data
+
+The CC-CEDICT can be updating by running the included script. Make sure 
+to first install all the required devDependencies.
+
+```sh
+npm install 
+node scripts/download.js
+```
+
+All other data is stored in the top-level `data/` directory. Feel free 
+to submit a PR to update or improve on the datasets.
 
 ## License
 
